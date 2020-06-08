@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -689,6 +689,7 @@ GameObject:
   - component: {fileID: 113023472}
   - component: {fileID: 113023471}
   - component: {fileID: 113023470}
+  - component: {fileID: 113023473}
   m_Layer: 0
   m_Name: Tank (2)
   m_TagString: Tank
@@ -703,7 +704,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 113023469}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a0cc4588d64880149859e4b1476fa18b, type: 3}
   m_Name: 
@@ -744,8 +745,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 113023469}
-  m_LocalRotation: {x: -0, y: -0.9946308, z: -0, w: -0.10348692}
-  m_LocalPosition: {x: 295.3, y: 65.814545, z: 555.4}
+  m_LocalRotation: {x: 0, y: 0.3949842, z: -0, w: -0.91868794}
+  m_LocalPosition: {x: 295.3, y: 65.814545, z: 543.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1303835805}
@@ -1086,7 +1087,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &186342313
 GameObject:
@@ -1491,7 +1492,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
-  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1887,14 +1887,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 395063028}
-  m_LocalRotation: {x: 0.4216554, y: 0.109324604, z: -0.22591409, w: 0.87133104}
+  m_LocalRotation: {x: 0, y: 0, z: -0.25097984, w: 0.96799237}
   m_LocalPosition: {x: 12.833679, y: -15.954544, z: 1.2897034}
   m_LocalScale: {x: 7, y: 7, z: 7}
   m_Children:
   - {fileID: 922752086}
   m_Father: {fileID: 1865693476}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 51.647003, y: 0, z: -29.071001}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -29.071001}
 --- !u!135 &395063030
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2046,7 +2046,7 @@ GameObject:
   - component: {fileID: 449427473}
   - component: {fileID: 449427474}
   m_Layer: 0
-  m_Name: Tank
+  m_Name: PlayerTank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2060,7 +2060,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 449427471}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 295.6562, y: 56.814545, z: 479.6103}
+  m_LocalPosition: {x: 295.6562, y: 98.7, z: 479.6103}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5006512735108744048}
@@ -2306,14 +2306,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 495697318}
-  m_LocalRotation: {x: 0.4216554, y: 0.109324604, z: -0.22591409, w: 0.87133104}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 12.833679, y: -15.954544, z: 1.2897034}
   m_LocalScale: {x: 7, y: 7, z: 7}
   m_Children:
   - {fileID: 1337011037}
   m_Father: {fileID: 113023472}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 51.647003, y: 0, z: -29.071001}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &495697320
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3843,7 +3843,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
-  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4388,7 +4387,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.392}
   m_RaycastTarget: 1
-  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5518,14 +5516,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1337011036}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.99, z: 0}
+  m_LocalRotation: {x: 0.70441604, y: -0.06162845, z: 0.06162845, w: 0.70441604}
+  m_LocalPosition: {x: -0.168, y: 0, z: 1.011}
   m_LocalScale: {x: 0.14285713, y: 1.1428571, z: 0.14285713}
   m_Children:
   - {fileID: 1515599597}
   m_Father: {fileID: 495697319}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: -10, z: 0}
 --- !u!136 &1337011038
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5838,7 +5836,7 @@ RectTransform:
   - {fileID: 326135323}
   - {fileID: 1877586455}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6657,6 +6655,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1558583740}
   - component: {fileID: 1558583739}
+  - component: {fileID: 1558583738}
   m_Layer: 0
   m_Name: Tank (1)
   m_TagString: Untagged
@@ -6664,6 +6663,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1558583738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558583737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 606c4929aedcead4c83be7da2ebaba54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &1558583739
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7661,6 +7672,7 @@ GameObject:
   - component: {fileID: 1865693476}
   - component: {fileID: 1865693475}
   - component: {fileID: 1865693474}
+  - component: {fileID: 1865693477}
   m_Layer: 0
   m_Name: Tank (3)
   m_TagString: Tank
@@ -7726,6 +7738,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: -191.88, z: 0}
+--- !u!114 &1865693477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865693473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 606c4929aedcead4c83be7da2ebaba54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1877586454
 GameObject:
   m_ObjectHideFlags: 0
@@ -7778,7 +7802,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
-  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
