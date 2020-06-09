@@ -43,6 +43,8 @@ public class TankController : MonoBehaviour
 
     private int ammoResources = 100; // Resources can be used to buy better ammo
     private int activeAmmoIndex = 0;
+
+    private float dustCooldown = .1f;
     
 
     // Start is called before the first frame update
@@ -68,12 +70,16 @@ public class TankController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        dustCooldown -= Time.deltaTime;
 
         if (activeTank && gc.currentGameState == GameController.gameStates.playerTurn)
         {
             forceText.GetComponent<TMP_Text>().text = shotForce.ToString();
             angleText.GetComponent<TMP_Text>().text = angle.ToString();
             orientationText.GetComponent<TMP_Text>().text = orientation.ToString();
+
+            float oldOrientation = orientation;
+            float oldAngle = angle;
 
             // Turn turret
             if (Input.GetKey(KeyCode.A))
@@ -101,21 +107,24 @@ public class TankController : MonoBehaviour
             }
 
             // Keep angle reasonable
+            angle = Mathf.Clamp(angle, -160f, -90f);
 
-             angle = Mathf.Clamp(angle, -160f, -90f);
-    
 
             // Set turret position
             //Vector3 currentEulerAngles = new Vector3(angle, orientation, turret.transform.eulerAngles.z);
             //turret.transform.eulerAngles = currentEulerAngles;
             Debug.Log(orientation);
-            turret.transform.rotation = Quaternion.AngleAxis(orientation, transform.TransformDirection(Vector3.up));
-            turret.transform.rotation *= Quaternion.AngleAxis(turret.transform.rotation.z, transform.TransformDirection(Vector3.forward));
 
-            turretVerticalRotator.transform.rotation = Quaternion.AngleAxis(orientation, transform.TransformDirection(Vector3.up));
+            if (angle != oldAngle || orientation != oldOrientation)
+            {
+                turret.transform.rotation = Quaternion.AngleAxis(orientation, transform.TransformDirection(Vector3.up));
+                turret.transform.rotation *= Quaternion.AngleAxis(turret.transform.rotation.z, transform.TransformDirection(Vector3.forward));
 
-            turretVerticalRotator.transform.rotation *= Quaternion.AngleAxis(angle, transform.TransformDirection(Vector3.right));
+                turretVerticalRotator.transform.rotation = Quaternion.AngleAxis(orientation, transform.TransformDirection(Vector3.up));
 
+                turretVerticalRotator.transform.rotation *= Quaternion.AngleAxis(angle, transform.TransformDirection(Vector3.right));
+
+            }
             // Adjust power
             if (Input.GetKey(KeyCode.E))
             {
@@ -164,6 +173,8 @@ public class TankController : MonoBehaviour
         // Direction of the turret
         Vector3 shotDir = -(turret.transform.position - bullet.transform.position).normalized;        
         bullet.GetComponent<Rigidbody>().AddForce(shotDir * shotForce);
+        this.transform.GetComponent<Rigidbody>().AddForce(-shotDir * shotForce);
+
 
         if (!tankCamOnly)
         {
@@ -187,6 +198,10 @@ public class TankController : MonoBehaviour
     
         // Make the cannon animate comically to emphasize the shot effect
         Vector3 currentPos = cannon.transform.position;
+
+        // Generate a little dust cloud
+        this.transform.Find("PotatoTankModel").Find("DustThumpFX").Find("DustThumpFXParticles").GetComponent<ParticleSystem>().Play();
+
       //  seq.Append(cannon.GetComponent<Transform>().DOMove((cannon.transform.position - turretVerticalRotator.transform.position).normalized, .4f));
 
      //   seq.Append(cannon.GetComponent<Transform>().DOMove(currentPos, 2f));
@@ -225,6 +240,16 @@ public class TankController : MonoBehaviour
 
             Debug.Log("Direct hit! Tank destroyed");
             Destroy(this.gameObject, 0f);
+
+        }
+
+        if(collision.transform.tag == "Terrain")
+        {
+            if (dustCooldown < 0)
+            {
+                this.transform.Find("PotatoTankModel").Find("DustThumpFX").Find("DustThumpFXParticles").GetComponent<ParticleSystem>().Play();
+                dustCooldown = .1f;
+            }
 
         }
     }

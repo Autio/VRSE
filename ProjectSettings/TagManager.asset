@@ -7,6 +7,7 @@ TagManager:
   - Terrain
   - Explosion
   - Tank
+  - TankDust
   layers:
   - Default
   - TransparentFX
