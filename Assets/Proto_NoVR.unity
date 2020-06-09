@@ -25266,7 +25266,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ammoPrefabs:
   - {fileID: 8408718989624321773, guid: 1111bbb81d85d3b459fc10b87da23af6, type: 3}
-  - {fileID: 8408718989624321773, guid: 1111bbb81d85d3b459fc10b87da23af6, type: 3}
+  - {fileID: 8408718989624321773, guid: 514940713e51ccd4c9c88138f021e541, type: 3}
+  - {fileID: 8408718989624321773, guid: d3d396758d6a1e9489c93442a1598abf, type: 3}
   - {fileID: 8408718989624321773, guid: 1111bbb81d85d3b459fc10b87da23af6, type: 3}
 --- !u!1 &1159123487 stripped
 GameObject:

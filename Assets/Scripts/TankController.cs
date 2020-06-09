@@ -18,6 +18,7 @@ public class TankController : MonoBehaviour
     private List<GameObject> bullets;
 
     public bool activeTank = false;
+    int hitpoints = 10;
 
     public float shotForce = 1000f;
     private float angle = 0;
@@ -59,6 +60,9 @@ public class TankController : MonoBehaviour
         turret.transform.rotation *= Quaternion.AngleAxis(turret.transform.rotation.z, transform.TransformDirection(Vector3.forward));
 
         turretVerticalRotator.transform.rotation = Quaternion.AngleAxis(angle, transform.TransformDirection(Vector3.right));
+
+        ammoText.GetComponent<TMP_Text>().text = "Ammo type: " + Arsenal.instance.arsenal[activeAmmoIndex].name;
+
     }
 
     // Update is called once per frame
@@ -152,15 +156,15 @@ public class TankController : MonoBehaviour
 
     public void FireGun()
     {
-        // Instantiate bullet 
-        GameObject bullet = Instantiate(bulletObject, bulletSpawnArea.transform.position, Quaternion.identity);
+        // Instantiate bullet based on the selected ammo
+        AmmoModel currentAmmo = Arsenal.instance.arsenal[activeAmmoIndex];
+        GameObject bullet = Instantiate(currentAmmo.ammoPrefab, bulletSpawnArea.transform.position, Quaternion.identity);
 
         // Add force
         // Direction of the turret
-        Vector3 shotDir = -(turret.transform.position - bullet.transform.position).normalized;
-        Debug.Log(shotDir);
-        
+        Vector3 shotDir = -(turret.transform.position - bullet.transform.position).normalized;        
         bullet.GetComponent<Rigidbody>().AddForce(shotDir * shotForce);
+
         if (!tankCamOnly)
         {
             bullet.transform.Find("BulletCamera").GetComponent<Camera>().enabled = true;
@@ -169,16 +173,16 @@ public class TankController : MonoBehaviour
 
         bullets.Add(bullet);
 
+        // Add bullet properties from the ammo model 
+        
+
         // Make the cannon recoil
         // Also freeze movement for the duration of the act 
         StartCoroutine(BlockPlayerMovement(.4f));
 
         Sequence seq = DOTween.Sequence();
         float startingScale = cannon.GetComponent<Transform>().localScale.z;
-
-
         seq.Append(cannon.GetComponent<Transform>().DOScale(startingScale * 1.6f, .1f));
-    
         seq.Append(cannon.GetComponent<Transform>().DOScale(startingScale * 1f, .3f));
     
         // Make the cannon animate comically to emphasize the shot effect
@@ -217,6 +221,8 @@ public class TankController : MonoBehaviour
     {
         if(collision.transform.tag == "Explosion")
         {
+            // Grab the damage in the explosion
+
             Debug.Log("Direct hit! Tank destroyed");
             Destroy(this.gameObject, 0f);
 
@@ -227,11 +233,27 @@ public class TankController : MonoBehaviour
     {
         if (other.transform.tag == "Explosion")
         {
+            TakeDamage(other.GetComponent<Explosion>().damage);
+            
+
+            // TODO: Play some kind of damage effect
+
             Debug.Log("Direct hit! Tank destroyed");
             Destroy(this.gameObject, 0f);
 
         }
     }
 
+    public void TakeDamage(int damage)
+    {
+        hitpoints -= damage;
+        Debug.Log("Tank " + this.gameObject.name + " takes " + damage + " damage!");
+
+        if(hitpoints <= 0)
+        {
+            Destroy(this.gameObject, 0f);
+
+        }
+    }
 
 }

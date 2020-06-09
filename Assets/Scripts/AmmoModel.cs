@@ -8,12 +8,12 @@ public class AmmoModel
     // Properties of different ammunition types
     public string name { get; protected set; }
     public string desc { get; protected set; }
-    GameObject ammoPrefab;
-    int damage, cost; // How many resources does it take to use a shot of this ammo? 
+    public GameObject ammoPrefab { get; protected set; }
+    public int damage { get; protected set; }
+    public float explosionRadius { get; protected set; }
+    public int cost { get; protected set; } // How many resources does it take to use a shot of this ammo? 
 
-
-
-    public AmmoModel(string name, string desc = "", GameObject ammoPrefab = null, int damage = 10, int cost = 10)
+    public AmmoModel(string name, string desc = "", GameObject ammoPrefab = null, int damage = 10, float explosionRadius = 20f, int cost = 10)
     {
         this.name = name;
         this.desc = desc;

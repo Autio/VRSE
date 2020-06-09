@@ -6,12 +6,23 @@ using UnityEngine;
 public class BulletBehaviour : MonoBehaviour
 {
     // Ammo type
-    enum ammoTypes { normal };
-    ammoTypes ammoType = ammoTypes.normal;
 
-    // Typical ammo creates a blast whenever it hits the terrain
-    public GameObject regularExplosionPrefab;
+    // These should be set as part of the prefab
+    public GameObject explosionPrefab;
     public GameObject explosionFX;
+
+    int damage; // How much damage does a single hit do
+    float explosionRadius;
+
+    // TODO:
+    // Bounciness? Physics material? Trail?
+    // Other than pure damage effects
+
+    public void setExplosion(int damage, float explosionRadius)
+    {
+        this.damage = damage;
+        this.explosionRadius = explosionRadius;
+    }
 
 
     // Start is called before the first frame update
@@ -33,8 +44,13 @@ public class BulletBehaviour : MonoBehaviour
         {
             Debug.Log("Hit terrain!");
             // Create explosion
-            Instantiate(regularExplosionPrefab, transform.position, Quaternion.identity);
+            GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity) as GameObject;
             Instantiate(explosionFX, transform.position, Quaternion.identity);
+
+            // Set the damage value of the explosion and its radius
+            // If a tank is within the damage radius, deal that damage to the tank
+            explosion.GetComponent<Explosion>().explosionRadius = explosionRadius;
+            explosion.GetComponent<Explosion>().damage = damage;
 
             Destroy(this.gameObject, 0f);
 

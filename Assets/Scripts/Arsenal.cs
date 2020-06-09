@@ -16,8 +16,9 @@ public class Arsenal : MonoBehaviour
         arsenal = new List<AmmoModel>();
 
         arsenal.Add(new AmmoModel("Normal", "Just your regular, run-of-the-mill potato", ammoPrefabs[0]));
-        arsenal.Add(new AmmoModel("Big Potato", "A heavy hitter guaranteed to starch a foe in one go", ammoPrefabs[1], 30, 30));
-        arsenal.Add(new AmmoModel("French Fries", "A bag of fries ready to spread flavour over a large area", ammoPrefabs[2], 5, 30));
+        arsenal.Add(new AmmoModel("Big Potato", "A heavy hitter guaranteed to starch a foe in one go", ammoPrefabs[1], 30, 30f, 30));
+        arsenal.Add(new AmmoModel("Very Big Potato", "The big daddy of all starches, covering a huge area", ammoPrefabs[2], 30, 60f, 50));
+        arsenal.Add(new AmmoModel("French Fries", "A bag of fries ready to spread flavour over a large area", ammoPrefabs[3], 5, 60f, 30));
 
     }
 
