@@ -243,6 +243,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   regularExplosionPrefab: {fileID: 1805659012541295245, guid: e769642f80a92a24a8cb1ea45c5e997e,
     type: 3}
+  explosionFX: {fileID: 4564254015930144945, guid: d7793b9f5f17cb544a4782622c10d919,
+    type: 3}
 --- !u!96 &2098896743
 TrailRenderer:
   serializedVersion: 2

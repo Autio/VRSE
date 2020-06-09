@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using UnityEditor.UI;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 public class TankController : MonoBehaviour
 {
+    private GameController gc;
+
     public GameObject bulletObject;
     public GameObject turret;
+    public GameObject turretVerticalRotator;
+    [SerializeField]
+    GameObject cannon;
     public GameObject mainCam;
     private List<GameObject> bullets;
 
@@ -26,29 +32,40 @@ public class TankController : MonoBehaviour
 
     // Info texts in UI 
     [SerializeField]
-    private GameObject forceText, angleText, orientationText;
+    private GameObject forceText, angleText, orientationText, ammoText;
 
     [SerializeField]
     private GameObject bulletSpawnArea;
 
+    private enum ammoTypes { normal, big };
+    private ammoTypes currentAmmo = ammoTypes.normal;
+
+    private int ammoResources = 100; // Resources can be used to buy better ammo
+    private int activeAmmoIndex = 0;
+    
+
     // Start is called before the first frame update
     void Start()
     {
+        gc = GameController.instance;
+
         bullets = new List<GameObject>();
 
         // Initial turret rotation
-        angle = turret.transform.rotation.x;
+        angle = turretVerticalRotator.transform.rotation.x;
         orientation = turret.transform.rotation.y;
 
         turret.transform.rotation = Quaternion.AngleAxis(orientation, transform.TransformDirection(Vector3.up));
-        turret.transform.rotation *= Quaternion.AngleAxis(angle, transform.TransformDirection(Vector3.right));
         turret.transform.rotation *= Quaternion.AngleAxis(turret.transform.rotation.z, transform.TransformDirection(Vector3.forward));
+
+        turretVerticalRotator.transform.rotation = Quaternion.AngleAxis(angle, transform.TransformDirection(Vector3.right));
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (activeTank)
+
+        if (activeTank && gc.currentGameState == GameController.gameStates.playerTurn)
         {
             forceText.GetComponent<TMP_Text>().text = shotForce.ToString();
             angleText.GetComponent<TMP_Text>().text = angle.ToString();
@@ -81,7 +98,7 @@ public class TankController : MonoBehaviour
 
             // Keep angle reasonable
 
-                angle = Mathf.Clamp(angle, 30f,90f);
+             angle = Mathf.Clamp(angle, -160f, -90f);
     
 
             // Set turret position
@@ -89,8 +106,11 @@ public class TankController : MonoBehaviour
             //turret.transform.eulerAngles = currentEulerAngles;
             Debug.Log(orientation);
             turret.transform.rotation = Quaternion.AngleAxis(orientation, transform.TransformDirection(Vector3.up));
-            turret.transform.rotation *= Quaternion.AngleAxis(angle, transform.TransformDirection(Vector3.right));
             turret.transform.rotation *= Quaternion.AngleAxis(turret.transform.rotation.z, transform.TransformDirection(Vector3.forward));
+
+            turretVerticalRotator.transform.rotation = Quaternion.AngleAxis(orientation, transform.TransformDirection(Vector3.up));
+
+            turretVerticalRotator.transform.rotation *= Quaternion.AngleAxis(angle, transform.TransformDirection(Vector3.right));
 
             // Adjust power
             if (Input.GetKey(KeyCode.E))
@@ -105,6 +125,11 @@ public class TankController : MonoBehaviour
 
             shotForce = Mathf.Clamp(shotForce, 1000f, 4000f);
 
+            // Change ammo 
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                NextAmmoType();
+            }
 
             // Fire
             if (Input.GetKeyDown(KeyCode.F))
@@ -144,6 +169,48 @@ public class TankController : MonoBehaviour
 
         bullets.Add(bullet);
 
+        // Make the cannon recoil
+        // Also freeze movement for the duration of the act 
+        StartCoroutine(BlockPlayerMovement(.4f));
+
+        Sequence seq = DOTween.Sequence();
+        float startingScale = cannon.GetComponent<Transform>().localScale.z;
+
+
+        seq.Append(cannon.GetComponent<Transform>().DOScale(startingScale * 1.6f, .1f));
+    
+        seq.Append(cannon.GetComponent<Transform>().DOScale(startingScale * 1f, .3f));
+    
+        // Make the cannon animate comically to emphasize the shot effect
+        Vector3 currentPos = cannon.transform.position;
+      //  seq.Append(cannon.GetComponent<Transform>().DOMove((cannon.transform.position - turretVerticalRotator.transform.position).normalized, .4f));
+
+     //   seq.Append(cannon.GetComponent<Transform>().DOMove(currentPos, 2f));
+
+        
+
+    }
+
+    private IEnumerator BlockPlayerMovement(float duration = .8f)
+    {
+        // Player cannot fire during this cooldown
+        gc.currentGameState = GameController.gameStates.transition;
+        yield return new WaitForSeconds(duration);
+        // Should this not move to the next player typically? Might be better to have this sit in the GameController when enemy AI is set up
+        gc.currentGameState = GameController.gameStates.playerTurn;
+
+    }
+
+    public void NextAmmoType()
+       
+    {
+        activeAmmoIndex++;
+        if(activeAmmoIndex > Arsenal.instance.arsenal.Count - 1)
+        {
+            activeAmmoIndex = 0;
+        }
+        ammoText.GetComponent<TMP_Text>().text = "Ammo type: "+ Arsenal.instance.arsenal[activeAmmoIndex].name;
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -165,4 +232,6 @@ public class TankController : MonoBehaviour
 
         }
     }
+
+
 }
