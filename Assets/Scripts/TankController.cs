@@ -21,8 +21,8 @@ public class TankController : MonoBehaviour
     int hitpoints = 10;
 
     public float shotForce = 1000f;
-    private float angle = 0;
-    private float orientation = 0;
+    [SerializeField] private float angle = 0;
+    [SerializeField] private float orientation = 0;
 
     public float orientationSpeedModifier = 2f;
     public float angleSpeedModifier = 10f;
@@ -61,9 +61,9 @@ public class TankController : MonoBehaviour
         turret.transform.rotation = Quaternion.AngleAxis(orientation, transform.TransformDirection(Vector3.up));
         turret.transform.rotation *= Quaternion.AngleAxis(turret.transform.rotation.z, transform.TransformDirection(Vector3.forward));
 
-        turretVerticalRotator.transform.rotation = Quaternion.AngleAxis(angle, transform.TransformDirection(Vector3.right));
+        //turretVerticalRotator.transform.rotation = Quaternion.AngleAxis(angle, transform.TransformDirection(Vector3.right)); COMOUT
 
-        ammoText.GetComponent<TMP_Text>().text = "Ammo type: " + Arsenal.instance.arsenal[activeAmmoIndex].name;
+        //ammoText.GetComponent<TMP_Text>().text = "Ammo type: " + Arsenal.instance.arsenal[activeAmmoIndex].name; COMOUT
 
     }
 
@@ -72,8 +72,8 @@ public class TankController : MonoBehaviour
     {
         dustCooldown -= Time.deltaTime;
 
-        if (activeTank && gc.currentGameState == GameController.gameStates.playerTurn)
-        {
+        //if (activeTank && gc.currentGameState == GameController.gameStates.playerTurn) COMOUT
+        //{
             forceText.GetComponent<TMP_Text>().text = shotForce.ToString();
             angleText.GetComponent<TMP_Text>().text = angle.ToString();
             orientationText.GetComponent<TMP_Text>().text = orientation.ToString();
@@ -160,7 +160,7 @@ public class TankController : MonoBehaviour
 
                 mainCam.GetComponent<Camera>().enabled = true;
             }
-        }
+        //}
     }
 
     public void FireGun()
@@ -175,6 +175,7 @@ public class TankController : MonoBehaviour
         bullet.GetComponent<Rigidbody>().AddForce(shotDir * shotForce);
         this.transform.GetComponent<Rigidbody>().AddForce(-shotDir * shotForce);
 
+        bullet.GetComponent<BulletBehaviour>().AssignShooter(gameObject);
 
         if (!tankCamOnly)
         {
@@ -189,7 +190,7 @@ public class TankController : MonoBehaviour
 
         // Make the cannon recoil
         // Also freeze movement for the duration of the act 
-        StartCoroutine(BlockPlayerMovement(.4f));
+        // StartCoroutine(BlockPlayerMovement(.4f)); COMOUT
 
         Sequence seq = DOTween.Sequence();
         float startingScale = cannon.GetComponent<Transform>().localScale.z;
@@ -281,4 +282,18 @@ public class TankController : MonoBehaviour
         }
     }
 
+    public void ReportBulletTouchdown(Vector3 hitPosition)
+    {
+        if (!gameObject.CompareTag("Player"))
+        {
+            gameObject.GetComponent<EnemyAI>().ReportHit(hitPosition);
+        }
+    }
+
+    public void SetCannonValues(float o, float a, float p)
+    {
+        orientation = o;
+        angle = a;
+        shotForce = p;
+    }
 }
