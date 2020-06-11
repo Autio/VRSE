@@ -10,6 +10,7 @@ public class BulletBehaviour : MonoBehaviour
     // These should be set as part of the prefab
     public GameObject explosionPrefab;
     public GameObject explosionFX;
+    private GameObject myShooter;
 
     int damage; // How much damage does a single hit do
     float explosionRadius;
@@ -52,8 +53,15 @@ public class BulletBehaviour : MonoBehaviour
             explosion.GetComponent<Explosion>().explosionRadius = explosionRadius;
             explosion.GetComponent<Explosion>().damage = damage;
 
+            myShooter.GetComponent<TankController>().ReportBulletTouchdown(transform.position);
+
             Destroy(this.gameObject, 0f);
 
         }
+    }
+
+    public void AssignShooter(GameObject go)
+    {
+        myShooter = go;
     }
 }
